@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using WebAPIApplication.Data;
+using WebAPIApplication.Infrastructure;
 
 namespace WebAPIApplication
 {
@@ -33,19 +34,24 @@ namespace WebAPIApplication
              services.AddDbContext<CampDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+                services.AddScoped<ICampRepository,CampRepository>();
+                services.AddTransient<CampDbInitializer>();
+               
             services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app,
+         IHostingEnvironment env, 
+         ILoggerFactory loggerFactory,CampDbInitializer seeder)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
              app.UseMvc(routes =>
             {
                 routes.MapRoute("MainApiRoute", "api/{controller}/{action}");
-
             });
+            seeder.Seed().Wait();
         }
     }
 }
