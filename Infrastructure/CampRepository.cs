@@ -10,7 +10,7 @@ namespace WebAPIApplication.Infrastructure
 {
     public class CampRepository : ICampRepository
     {
-        private CampDbContext Context {get;}
+        private CampDbContext Context ;
         public CampRepository(CampDbContext ctx)
         {
             Context = ctx;

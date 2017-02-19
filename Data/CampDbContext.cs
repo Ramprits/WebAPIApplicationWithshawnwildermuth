@@ -5,28 +5,27 @@ using WebAPIApplication.Entities;
 
 namespace WebAPIApplication.Data
 {
-    public class CampDbContext : IdentityDbContext
+    public class CampDbContext : IdentityDbContext<CampUser>
     {
-        private IConfigurationRoot _config;
-        public CampDbContext(DbContextOptions options, 
-        IConfigurationRoot config): base(options)
+       public IConfigurationRoot Configuration { get; }
+        public CampDbContext(DbContextOptions options): base(options)
         {
-             _config = config;
+            
         }
 
     public DbSet<Camp> Camps { get; set; }
     public DbSet<Speaker> Speakers { get; set; }
     public DbSet<Talk> Talks { get; set; }
-    public DbSet<Location> Locations { get; set; }
+  //  public DbSet<Location> Locations { get; set; }
 
 
 protected override void OnModelCreating(ModelBuilder builder)
     {
       base.OnModelCreating(builder);
 
-    //   builder.Entity<Camp>()
-    //     .Property(c => c.Moniker)
-    //     .IsRequired();
+      builder.Entity<Camp>()
+        .Property(c => c.Moniker)
+        .IsRequired();
 
       builder.Entity<Camp>()
         .Property(c => c.RowVersion)
@@ -41,14 +40,6 @@ protected override void OnModelCreating(ModelBuilder builder)
         .ValueGeneratedOnAddOrUpdate()
         .IsConcurrencyToken();
     }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-      base.OnConfiguring(optionsBuilder);
-
-      optionsBuilder.UseSqlServer(_config["Data:ConnectionString"]);
-    }
-
     }
     
 }

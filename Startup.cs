@@ -1,11 +1,10 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
 using WebAPIApplication.Data;
-using WebAPIApplication.Entities;
 
 namespace WebAPIApplication
 {
@@ -21,11 +20,7 @@ namespace WebAPIApplication
             Configuration = builder.Build();
           }
 
-          public Startup(IConfigurationRoot configuration)
-          {
-               this.Configuration = configuration;
-
-          }
+        
           public IConfigurationRoot Configuration { get; }
 
 
@@ -35,8 +30,9 @@ namespace WebAPIApplication
         {
          
             // Add framework services.
-            services.AddDbContext<CampDbContext>(ServiceLifetime.Scoped)
-            .AddIdentity<CampUser, IdentityRole>();
+             services.AddDbContext<CampDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddMvc();
         }
 
@@ -45,8 +41,11 @@ namespace WebAPIApplication
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+             app.UseMvc(routes =>
+            {
+                routes.MapRoute("MainApiRoute", "api/{controller}/{action}");
 
-            app.UseMvc();
+            });
         }
     }
 }
