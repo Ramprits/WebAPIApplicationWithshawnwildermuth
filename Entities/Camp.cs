@@ -15,8 +15,9 @@ namespace WebAPIApplication.Entities
 
         public string Description { get; set; }
         public int LocationId { get; set; }
-        public CampUser User { get; set; }
+        
         public Location Location { get; set; }
+        public CampUser User { get; set; }
 
         public ICollection<Speaker> Speakers { get; set; }
 

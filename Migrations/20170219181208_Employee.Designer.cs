@@ -8,9 +8,10 @@ using WebAPIApplication.Data;
 namespace WebAPIApplication.Migrations
 {
     [DbContext(typeof(CampDbContext))]
-    partial class CampDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170219181208_Employee")]
+    partial class Employee
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.0-rtm-22752")

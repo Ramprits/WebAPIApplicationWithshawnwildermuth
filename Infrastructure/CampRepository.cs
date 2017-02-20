@@ -70,7 +70,7 @@ namespace WebAPIApplication.Infrastructure
 
         public Speaker GetSpeaker(int speakerId)
         {
-             return Context.Speakers
+         return Context.Speakers
         .Include(s => s.Camp)
         .Where(s => s.Id == speakerId)
         .FirstOrDefault();

@@ -1,16 +1,31 @@
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using WebAPIApplication.Data;
 
 namespace WebAPIApplication.Controllers
 {
     [Route("api/[controller]")]
     public class ValuesController : Controller
     {
+        private readonly CampDbContext _context;
+        public ValuesController(CampDbContext context)
+        {
+           
+          _context = context;
+        }
         // GET api/values
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IActionResult Get()
         {
-            return new string[] { "value1", "value2" };
+            var result = _context.Employees.Join(_context.Departments,
+                            e => e.DepartmentId,
+                            d => d.Id,(emp,dep) =>new
+                            {
+                                Name = emp.FirstName +" "+ emp.LastName,
+                                DepartmentName = dep.Name
+                            });
+            return Ok(result.ToList());
         }
 
         // GET api/values/5

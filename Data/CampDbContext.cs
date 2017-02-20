@@ -12,7 +12,8 @@ namespace WebAPIApplication.Data
         {
             
         }
-
+ public DbSet<Department> Departments { get; set; }
+  public DbSet<Employee> Employees { get; set; }
     public DbSet<Camp> Camps { get; set; }
     public DbSet<Speaker> Speakers { get; set; }
     public DbSet<Talk> Talks { get; set; }
