@@ -1,9 +1,7 @@
 
-
 using System;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using WebAPIApplication.Data;
 using WebAPIApplication.Entities;
@@ -12,28 +10,29 @@ using WebAPIApplication.Infrastructure;
 namespace WebAPIApplication.Controllers
 {
 
-  [Route("api/Employee")]
-  public class EmployeesController : Controller
+  [Route("api/Departments")]
+  public class DepartmentsController : Controller
   {
 
-    ILogger<EmployeesController> _logger;
+    ILogger<DepartmentsController> _logger;
+
     private readonly CampDbContext _context;
 
-    private GenericRepository<Employee> _repo;
-    public EmployeesController(ILogger<EmployeesController> logger ,
-    CampDbContext context,GenericRepository<Employee> repo)
+    private GenericRepository<Department> _repo;
+    public DepartmentsController(ILogger<DepartmentsController> logger ,
+    CampDbContext context,GenericRepository<Department> repo)
     {
       _repo = repo;
       _logger = logger;
       _context =context;
     }
+
     [HttpGet]
     public IActionResult Get()
     {
       try
       {
-        var employeeWithDepartment = _repo.All;
-        return Ok(employeeWithDepartment);
+        return Ok(_repo.All);
       }
       catch (Exception)
       {
@@ -42,31 +41,11 @@ namespace WebAPIApplication.Controllers
       }
     }
 
-    [HttpGet("{Id}")]
-    public IActionResult Get(int Id)
-    {
-      try
-      {
-        var employee = _context.Employees.FirstOrDefault(c=>c.Id == Id);
-        if (employee == null)
-        {
-          return BadRequest("Employee Not Found ! ");
-        }
-        return Ok(employee);
-      }
-      catch (Exception)
-      {
-        return BadRequest();
-      }
-    }
     [HttpPost]
-    public IActionResult Post([FromBody] Employee model)
+    public IActionResult Post([FromBody] Department  model)
     {
       try
       {
-        if(ModelState.IsValid)
-        _context.Employees.Add(model);
-        _context.SaveChanges();
         return Created("", null);
       }
       catch (Exception)
@@ -77,7 +56,7 @@ namespace WebAPIApplication.Controllers
     }
 
     [HttpPut]
-    public IActionResult Put([FromBody] Employee model)
+    public IActionResult Put([FromBody] Department   model)
     {
       try
       {

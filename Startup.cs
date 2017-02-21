@@ -37,6 +37,7 @@ namespace WebAPIApplication
                 services.AddScoped<ICampRepository,CampRepository>();
                 services.AddTransient<CampDbInitializer>();
                
+               
             services.AddMvc();
         }
 
@@ -47,6 +48,7 @@ namespace WebAPIApplication
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+            app.UseStatusCodePages();
              app.UseMvc(routes =>
             {
                 routes.MapRoute("MainApiRoute", "api/{controller}/{action}");

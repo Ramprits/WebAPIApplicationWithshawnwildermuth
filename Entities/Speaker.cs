@@ -17,6 +17,8 @@ namespace WebAPIApplication.Entities
 
     public virtual ICollection<Talk> Talks { get; set; }
 
+    public int CampId { get; set; }
+
     public virtual Camp Camp { get; set; }
 
     public byte[] RowVersion { get; set; }
